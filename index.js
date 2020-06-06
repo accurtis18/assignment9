@@ -67,25 +67,25 @@ inquirer
     let formatTOC = await editTOC(answers.TOC);
 
     let readMeString = `
-# Title: 
+# Title\ 
 ${answers.ProjectName}
-Description: 
+# Description\ 
 ${answers.Description}
-Table of Contents: 
+# Table of Contents\ 
 * ${formatTOC}
-Badges:
+# Badges:
 ${badgeLink}
-Installation:
+# Installation:
  ${answers.Installation}
-Usage: 
+# Usage: 
 ${answers.Useage}
-License: 
+# License: 
 ${answers.License}
-Contributing:
+# Contributing:
 ${answers.Contributing}
-Test:
+# Test:
 ${answers.Test}
-GitHub Email:
+# GitHub Email:
 ${answers.Email}
         `
 
