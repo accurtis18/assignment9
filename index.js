@@ -84,9 +84,9 @@ ${answers.License}
 # Contributing:
 ${answers.Contributing}
 # Test:
-${answers.Test}
+${answers.Tests}
 # GitHub Email:
-${answers.Email}
+${answers.email}
         `
 
     fs.writeFile("readMe.md", readMeString, function(err){
@@ -108,13 +108,23 @@ function badge(bad){
 }
 
 function editTOC(toc){
-
-        let match = toc.indexOf('\n')
-        console.log(match);
-        if (match > 0){
-            const forT = toc.slice(0, match+1) + '* ' + toc.slice(match+1, toc.length);
-
-        return forT; 
-
-}
+        let match = toc.indexOf('\n');
+        let trim = toc.lastIndexOf('\n');
+        if(trim === toc.length-1){
+            toc = toc.slice(0, toc.length-1);
+        }
+        let formatTOC = "";
+        let i = 0;
+        while (match > 0){
+            if(i === 0){
+                formatTOC = toc.slice(0, match+1) + '* ' + toc.slice(match+1, toc.length);
+                match = formatTOC.indexOf('\n', match+1);
+                console.log(match);
+            } else{
+                formatTOC = formatTOC.slice(0, match+1) + '* ' + formatTOC.slice(match+1, formatTOC.length);
+                match = formatTOC.indexOf('\n', match+1);
+            }
+            i++;
+        }
+        return formatTOC; 
 }
