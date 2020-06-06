@@ -1,0 +1,24 @@
+{
+  "name": "assignment9",
+  "version": "1.0.0",
+  "description": "ReadMe Generator",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "inquirer": "^7.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/accurtis18/assignment9.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/accurtis18/assignment9/issues"
+  },
+  "homepage": "https://github.com/accurtis18/assignment9#readme"
+}
