@@ -16,14 +16,16 @@ inquirer
         message: 'Provide a brief description of the project'  
       },
       {
-        type: 'editor',
+        type: 'confirm',
         name: 'TOC',
-        message: 'Provide a table of contetns'  
+        message: 'Provide a table of contetns', 
+        default: false 
       },
       {
         type: 'list',
         name: 'Badge',
         message: 'Do you have any of these badges?',
+        default: false,
         choices: ['Apache', 'Eclipse', 'IBM'],
         filter: function(val){
             return val.toLowerCase();
@@ -32,64 +34,71 @@ inquirer
       {
         type: 'input',
         name: 'Installation',
-        message: 'Provide installation instructions'  
+        message: 'Provide installation instructions',
+        default: false  
       },
       {
         type: 'input',
-        name: 'Useage',
-        message: 'Provide the usage of this code'  
+        name: 'Usage',
+        message: 'Provide the usage of this code',
+        default: false  
       },
       {
         type: 'input',
         name: 'License',
-        message: 'Provide your license information'  
+        message: 'Provide your license information',
+        default: false  
       },
       {
         type: 'input',
         name: 'Contributing',
-        message: 'Provider information on the contributors'  
+        message: 'Provider information on the contributors',
+        default: false 
       },
       {
         type: 'input',
         name: 'Tests',
-        message: 'Provide testing information'  
+        message: 'Provide testing information',
+        default: false 
       },
       {
         type: 'input',
         name: 'email',
-        message: 'Provide your github email'  
+        message: 'Provide your github email',
+        default: false 
       }
   ])
   .then(async answers => {
     console.log("What is this?", answers);
     console.log(answers.Badge);
     let badgeLink = await badge(answers.Badge);
-    let formatTOC = await editTOC(answers.TOC);
+    // let formatTOC = await editTOC(answers.TOC);
+    let response = await createResponse(answers, badgeLink);
 
-    let readMeString = `
-# Title\ 
-${answers.ProjectName}
-# Description\ 
-${answers.Description}
-# Table of Contents\ 
-* ${formatTOC}
-# Badges:
-${badgeLink}
-# Installation:
- ${answers.Installation}
-# Usage: 
-${answers.Useage}
-# License: 
-${answers.License}
-# Contributing:
-${answers.Contributing}
-# Test:
-${answers.Tests}
-# GitHub Email:
-${answers.email}
-        `
+//     let readMeString = `
+// # Title\ 
+// ${answers.ProjectName}
+// # Description\ 
+// ${answers.Description}
+// # Table of Contents\ 
+// * ${formatTOC}
+// # Badges:
+// ${badgeLink}
+// # Installation:
+//  ${answers.Installation}
+// # Usage: 
+// ${answers.Usage}
+// # License: 
+// ${answers.License}
+// # Contributing:
+// ${answers.Contributing}
+// # Test:
+// ${answers.Tests}
+// # GitHub Email:
+// ${answers.email}
+//         `
 
-    fs.writeFile("readMe.md", readMeString, function(err){
+    fs.writeFile("readMe.md", response, function(err){
         if (err) throw err;
         console.log('success');
     })
@@ -107,24 +116,92 @@ function badge(bad){
     return link;
 }
 
-function editTOC(toc){
-        let match = toc.indexOf('\n');
-        let trim = toc.lastIndexOf('\n');
-        if(trim === toc.length-1){
-            toc = toc.slice(0, toc.length-1);
-        }
-        let formatTOC = "";
-        let i = 0;
-        while (match > 0){
-            if(i === 0){
-                formatTOC = toc.slice(0, match+1) + '* ' + toc.slice(match+1, toc.length);
-                match = formatTOC.indexOf('\n', match+1);
-                console.log(match);
-            } else{
-                formatTOC = formatTOC.slice(0, match+1) + '* ' + formatTOC.slice(match+1, formatTOC.length);
-                match = formatTOC.indexOf('\n', match+1);
-            }
-            i++;
-        }
-        return formatTOC; 
+function createResponse(answers, badge){
+  let ToC = ""
+  let header = `
+  # Title\ 
+  ${answers.ProjectName}
+  # Description\ 
+  ${answers.Description}`
+  let responseBody = `
+  # Badges:
+${badge}`;
+  let response = "";
+
+  if(answers.TOC){
+    ToC = `# Table of Contents\
+    * [Badges](#badges)`
+  }
+  if(answers.Installation){
+    ToC += `
+    * [Installation](#installation)`;
+    responseBody += `
+    # Installation:
+ ${answers.Installation}`
+  }
+  if(answers.Usage){
+    ToC += `
+    * [Usage](#usage)`;
+    responseBody += `
+    # Usage:
+ ${answers.Usage}`
+  }
+if(answers.License){
+  ToC += `
+  * [License](#license)`;
+  responseBody += `
+  # License:
+${answers.License}`
 }
+if(answers.Contributing){
+  ToC += `
+  * [Contributing](#contributing)`;
+  responseBody += `
+  # Contributing:
+${answers.Contributing}`
+}
+if(answers.Tests){
+  ToC += `
+  * [Tests](#tests)`;
+  responseBody += `
+  # Tests:
+${answers.Tests}`
+}
+if(answers.email){
+  ToC += `
+  * [Email](#email)`;
+  responseBody += `
+  # Email:
+${answers.email}`
+}
+if(answers.TOC){
+  response = header + ToC + responseBody;
+  return response;
+} else{
+  response = header + responseBody;
+  return response;
+}
+
+}
+
+// function editTOC(toc){
+//         let match = toc.indexOf('\n');
+//         let trim = toc.lastIndexOf('\n');
+//         if(trim === toc.length-1){
+//             toc = toc.slice(0, toc.length-1);
+//         }
+//         let formatTOC = "";
+//         let i = 0;
+//         while (match > 0){
+//             if(i === 0){
+//                 formatTOC = toc.slice(0, match+1) + '* ' + toc.slice(match+1, toc.length);
+//                 match = formatTOC.indexOf('\n', match+1);
+//                 console.log(match);
+//             } else{
+//                 formatTOC = formatTOC.slice(0, match+1) + '* ' + formatTOC.slice(match+1, formatTOC.length);
+//                 match = formatTOC.indexOf('\n', match+1);
+//             }
+//             i++;
+//         }
+//         return formatTOC; 
+// }
