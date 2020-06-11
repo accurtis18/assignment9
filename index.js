@@ -125,7 +125,7 @@ function createResponse(answers, badge){
   ${answers.Description}
   `
   let responseBody = `
-  # Badges:
+# Badges:
 ${badge}`;
   let response = "";
 
@@ -137,42 +137,42 @@ ${badge}`;
     ToC += `
 * [Installation](#installation)`;
     responseBody += `
-    # Installation:
+# Installation:
  ${answers.Installation}`
   }
   if(answers.Usage){
     ToC += `
 * [Usage](#usage)`;
     responseBody += `
-    # Usage:
+# Usage:
  ${answers.Usage}`
   }
 if(answers.License){
   ToC += `
 * [License](#license)`;
   responseBody += `
-  # License:
+# License:
 ${answers.License}`
 }
 if(answers.Contributing){
   ToC += `
 * [Contributing](#contributing)`;
   responseBody += `
-  # Contributing:
+# Contributing:
 ${answers.Contributing}`
 }
 if(answers.Tests){
   ToC += `
 * [Tests](#tests)`;
   responseBody += `
-  # Tests:
+# Tests:
 ${answers.Tests}`
 }
 if(answers.email){
   ToC += `
 * [Email](#email)`;
   responseBody += `
-  # Email:
+# Email:
 ${answers.email}`
 }
 if(answers.TOC){
