@@ -122,54 +122,55 @@ function createResponse(answers, badge){
   # Title\ 
   ${answers.ProjectName}
   # Description\ 
-  ${answers.Description}`
+  ${answers.Description}
+  `
   let responseBody = `
   # Badges:
 ${badge}`;
   let response = "";
 
   if(answers.TOC){
-    ToC = `# Table of Contents\
-    * [Badges](#badges)`
+    ToC = `# Table of Contents\n
+* [Badges](#badges)`
   }
   if(answers.Installation){
     ToC += `
-    * [Installation](#installation)`;
+* [Installation](#installation)`;
     responseBody += `
     # Installation:
  ${answers.Installation}`
   }
   if(answers.Usage){
     ToC += `
-    * [Usage](#usage)`;
+* [Usage](#usage)`;
     responseBody += `
     # Usage:
  ${answers.Usage}`
   }
 if(answers.License){
   ToC += `
-  * [License](#license)`;
+* [License](#license)`;
   responseBody += `
   # License:
 ${answers.License}`
 }
 if(answers.Contributing){
   ToC += `
-  * [Contributing](#contributing)`;
+* [Contributing](#contributing)`;
   responseBody += `
   # Contributing:
 ${answers.Contributing}`
 }
 if(answers.Tests){
   ToC += `
-  * [Tests](#tests)`;
+* [Tests](#tests)`;
   responseBody += `
   # Tests:
 ${answers.Tests}`
 }
 if(answers.email){
   ToC += `
-  * [Email](#email)`;
+* [Email](#email)`;
   responseBody += `
   # Email:
 ${answers.email}`
